@@ -5,7 +5,7 @@
  * API de Amazon. El sitio es estático: no hay base de datos ni panel de edición.
  */
 
-export type ProductStatus = 'published' | 'draft';
+type ProductStatus = 'published' | 'draft';
 
 export type Product = {
 	id: string;
@@ -38,13 +38,13 @@ export type Product = {
 };
 
 /** Un precio se muestra solo si se consultó hace menos de 24 horas. */
-export const PRICE_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+const PRICE_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
 /** Atributo rel obligatorio en todo enlace de afiliado. */
 export const AFFILIATE_REL = 'noopener noreferrer sponsored nofollow';
 
 /** Solo se aceptan enlaces HTTPS a dominios de Amazon. */
-export const isAmazonUrl = (raw: string | undefined): boolean => {
+const isAmazonUrl = (raw: string | undefined): boolean => {
 	if (!raw) return false;
 	try {
 		const url = new URL(raw.trim());

@@ -189,6 +189,3 @@ export const categoryName = (id: string): string =>
 
 export const categorySpecs = (id: string): SpecField[] =>
 	CATEGORIES.find(c => c.id === id)?.specs ?? [];
-
-export const categoryById = (id: string): Category | undefined =>
-	CATEGORIES.find(c => c.id === id);
