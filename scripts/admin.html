@@ -152,6 +152,18 @@ document.getElementById('remove').addEventListener('click', async () => {
   show('Eliminado. Recuerda publicar con git push.', true);
 });
 
+// Al pegar un enlace de Amazon: rellena el ASIN y, si el nombre está vacío, el título que trae el propio enlace.
+form.productUrl.addEventListener('input', () => {
+  const raw = form.productUrl.value.trim();
+  const asinMatch = raw.match(/\/(?:dp|gp\/product)\/([A-Z0-9]{10})(?=[\/?#&]|$)/i);
+  if (asinMatch) form.asin.value = asinMatch[1].toUpperCase();
+  const slugMatch = raw.match(/amazon\.[a-z.]+\/([^\/?#]+)\/(?:dp|gp\/product)\//i);
+  if (slugMatch && !form.name.value.trim()) {
+    const title = decodeURIComponent(slugMatch[1]).replace(/[-_+]+/g, ' ').trim();
+    if (title && title.toLowerCase() !== 'dp') form.name.value = title;
+  }
+});
+
 fill(null);
 load();
 </script>

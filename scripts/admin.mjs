@@ -24,6 +24,12 @@ const HOSTS = new Set([`127.0.0.1:${PORT}`, `localhost:${PORT}`]);
 const AMAZON_TAG = process.env.CREATORS_PARTNER_TAG || 'carlosanton0b-21';
 const AMAZON_HOST = 'www.amazon.es';
 
+/** Saca el ASIN de un enlace de producto de Amazon. Devuelve null si no lo tiene. */
+function asinFromUrl(raw) {
+	const match = String(raw).match(/\/(?:dp|gp\/product)\/([A-Z0-9]{10})(?=[\/?#&]|$)/i);
+	return match ? match[1].toUpperCase() : null;
+}
+
 /**
  * Enlace de afiliado a partir del ASIN o de un enlace de Amazon pegado.
  * Con ASIN: /dp/ASIN?tag=... Sin ASIN: el enlace pegado con tu tag.
@@ -78,14 +84,19 @@ function sanitize(input, existing = {}) {
 	const category = str('category', 30);
 	if (!CATEGORY_IDS.includes(category)) errors.push('Categoría no válida.');
 
-	const asin = str('asin', 10).toUpperCase();
+	const pastedUrl = str('productUrl', 500);
+	if (pastedUrl && !isAmazonHttps(pastedUrl)) errors.push('El enlace del producto debe ser https y de amazon.');
+
+	// Si no escribiste el ASIN, se saca del enlace pegado (/dp/ASIN o /gp/product/ASIN).
+	let asin = str('asin', 10).toUpperCase();
+	if (!asin && pastedUrl) asin = asinFromUrl(pastedUrl) ?? '';
 	if (asin && !/^[A-Z0-9]{10}$/.test(asin)) errors.push('El ASIN debe tener 10 caracteres alfanuméricos.');
 
 	const image = str('image', 500);
 	if (image && !isHttps(image)) errors.push('La imagen debe ser una URL https.');
 
-	const productUrl = str('productUrl', 500);
-	if (productUrl && !isAmazonHttps(productUrl)) errors.push('El enlace del producto debe ser https y de amazon.');
+	// Con ASIN, el enlace queda limpio en /dp/ASIN; sin ASIN se usa el que pegaste.
+	const productUrl = asin ? `https://${AMAZON_HOST}/dp/${asin}` : pastedUrl;
 
 	const status = str('status', 10) || 'draft';
 	if (!STATUSES.includes(status)) errors.push('Estado no válido.');
