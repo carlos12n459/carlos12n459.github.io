@@ -15,7 +15,6 @@ export function SiteHeader() {
 			<nav aria-label="Navegación principal">
 				<a href="#ofertas">Ofertas</a>
 				<a href="#como-funciona">Cómo funciona</a>
-				<a href="/admin">Admin</a>
 			</nav>
 			<a className="header-action" href="#ofertas"><Zap size={16} /> Explorar catálogo <ArrowUpRight size={16} /></a>
 		</header>
