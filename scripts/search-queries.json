@@ -1,0 +1,10 @@
+[
+  { "category": "gpu", "keywords": "NVIDIA GeForce RTX 4060" },
+  { "category": "gpu", "keywords": "AMD Radeon RX 7600" },
+  { "category": "cpu", "keywords": "AMD Ryzen 5 7600" },
+  { "category": "cpu", "keywords": "Intel Core i5 14600K" },
+  { "category": "ram", "keywords": "memoria DDR5 32GB 6000MHz" },
+  { "category": "storage", "keywords": "SSD NVMe 1TB PCIe 4.0" },
+  { "category": "monitor", "keywords": "monitor gaming 27 pulgadas 144Hz" },
+  { "category": "peripherals", "keywords": "teclado mecanico gaming" }
+]

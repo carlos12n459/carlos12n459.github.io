@@ -8,7 +8,9 @@
     "build": "npm run build --prefix apps/web",
     "lint": "npm run lint --prefix apps/web",
     "typecheck": "npm run typecheck --prefix apps/web",
-    "prices": "node scripts/update-prices.mjs"
+    "prices": "node scripts/update-prices.mjs",
+    "prices:dry": "node scripts/update-prices.mjs --dry-run",
+    "admin": "node scripts/admin.mjs"
   },
   "workspaces": [
     "apps/*"

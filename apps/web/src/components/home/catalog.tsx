@@ -2,10 +2,15 @@ import { useEffect, useState } from 'react';
 import { ArrowUpRight, Zap, SlidersHorizontal, X, LayoutGrid, GitCompare, ExternalLink } from 'lucide-react';
 import productsData from '@/data/products.json';
 import { CATEGORIES, categorySpecs, categoryName } from '@/data/categories';
-import { currentPrice, formatCheckedAt, formatPrice, hasAffiliate, outboundUrl, AFFILIATE_REL, type Product } from '@/data/products';
+import { currentPrice, formatCheckedAt, formatPrice, hasAffiliate, outboundUrl, AFFILIATE_REL, mergeWithOffers, type Product } from '@/data/products';
 import { Comparator } from '@/components/home/comparator';
 
-const records = (productsData as unknown as Product[]).filter(p => p.status === 'published');
+// Ofertas generadas por scripts/update-prices.mjs. No se versiona; si no existe, el catálogo muestra sin precios.
+const generatedOffers = Object.values(
+	import.meta.glob<(Partial<Product> & { id: string })[]>('/src/data/offers.generated.json', { eager: true, import: 'default' }),
+).flat();
+
+const records = mergeWithOffers(productsData as unknown as Product[], generatedOffers).filter(p => p.status === 'published');
 
 const verifiedDiscount = (p: Product): number | null => {
 	const price = currentPrice(p);

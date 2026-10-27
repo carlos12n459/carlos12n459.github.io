@@ -89,6 +89,31 @@ export const formatPrice = (price: number | null | undefined, currency = 'EUR'):
 	}
 };
 
+/**
+ * Une el catálogo manual (products.json) con las ofertas que genera el bot
+ * (offers.generated.json). El bot solo aporta datos de precio, enlace e imagen;
+ * los productos que aporta y no están en el catálogo se añaden al final.
+ */
+type OfferEntry = Partial<Product> & { id: string };
+
+export const mergeWithOffers = (manual: Product[], generated: OfferEntry[]): Product[] => {
+	const byId = new Map(generated.map(g => [g.id, g]));
+	const merged = manual.map(p => {
+		const offer = byId.get(p.id);
+		if (!offer) return p;
+		byId.delete(p.id);
+		return {
+			...p,
+			price: offer.price ?? null,
+			priceCheckedAt: offer.priceCheckedAt ?? null,
+			previousPrice: offer.previousPrice ?? null,
+			affiliateUrl: offer.affiliateUrl ?? '',
+			image: offer.image || p.image,
+		};
+	});
+	return [...merged, ...([...byId.values()] as Product[])];
+};
+
 /** Fecha y hora legibles de la última consulta de precio. */
 export const formatCheckedAt = (iso: string | null | undefined): string | null => {
 	if (!iso) return null;
