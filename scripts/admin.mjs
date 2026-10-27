@@ -20,6 +20,22 @@ const PAGE_FILE = path.resolve(here, 'admin.html');
 const PORT = Number(process.env.ADMIN_PORT ?? 4321);
 const HOSTS = new Set([`127.0.0.1:${PORT}`, `localhost:${PORT}`]);
 
+/** Tu etiqueta de asociado (ID de tienda). No es secreta: va en los enlaces públicos. */
+const AMAZON_TAG = process.env.CREATORS_PARTNER_TAG || 'carlosanton0b-21';
+const AMAZON_HOST = 'www.amazon.es';
+
+/**
+ * Enlace de afiliado a partir del ASIN o de un enlace de Amazon pegado.
+ * Con ASIN: /dp/ASIN?tag=... Sin ASIN: el enlace pegado con tu tag.
+ */
+function buildAffiliate(asin, productUrl) {
+	if (asin) return `https://${AMAZON_HOST}/dp/${asin}?tag=${AMAZON_TAG}`;
+	if (!productUrl) return '';
+	const url = new URL(productUrl);
+	url.searchParams.set('tag', AMAZON_TAG);
+	return url.toString();
+}
+
 const CATEGORY_IDS = [
 	'gpu', 'cpu', 'desktop', 'laptop', 'monitor', 'ram', 'storage', 'motherboard',
 	'psu', 'cooling', 'case', 'peripherals', 'audio',
@@ -76,6 +92,15 @@ function sanitize(input, existing = {}) {
 
 	const specs = input.specs !== undefined ? parseSpecs(input.specs) : existing.specs ?? {};
 
+	// Si hay ASIN, el enlace del producto se arma solo. Si no, se usa el que pegaste.
+	const finalProductUrl = productUrl || (asin ? `https://${AMAZON_HOST}/dp/${asin}` : '');
+	let affiliateUrl = '';
+	try {
+		affiliateUrl = buildAffiliate(asin, finalProductUrl);
+	} catch {
+		errors.push('El enlace del producto no es una URL válida.');
+	}
+
 	return {
 		errors,
 		product: {
@@ -88,7 +113,8 @@ function sanitize(input, existing = {}) {
 			image,
 			description: str('description', 500),
 			specs,
-			productUrl,
+			productUrl: finalProductUrl,
+			affiliateUrl,
 			featured: Boolean(input.featured ?? existing.featured),
 			popular: Boolean(input.popular ?? existing.popular),
 			status,

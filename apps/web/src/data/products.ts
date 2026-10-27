@@ -107,7 +107,7 @@ export const mergeWithOffers = (manual: Product[], generated: OfferEntry[]): Pro
 			price: offer.price ?? null,
 			priceCheckedAt: offer.priceCheckedAt ?? null,
 			previousPrice: offer.previousPrice ?? null,
-			affiliateUrl: offer.affiliateUrl ?? '',
+			affiliateUrl: offer.affiliateUrl ?? p.affiliateUrl,
 			image: offer.image || p.image,
 		};
 	});

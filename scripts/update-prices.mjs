@@ -109,8 +109,12 @@ function bestOffer(item, config) {
 
 const chunks = (list, size) => Array.from({ length: Math.ceil(list.length / size) }, (_, i) => list.slice(i * size, i * size + size));
 
+/**
+ * Quita el precio cuando no hay oferta válida. No toca el enlace de afiliado:
+ * el que armó el admin con tu tag sigue siendo válido aunque no haya precio.
+ */
 function retired(product) {
-	return { id: product.id, price: null, priceCheckedAt: null, previousPrice: null, affiliateUrl: '' };
+	return { id: product.id, price: null, priceCheckedAt: null, previousPrice: null };
 }
 
 async function main() {

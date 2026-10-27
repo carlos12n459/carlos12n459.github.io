@@ -46,11 +46,11 @@
     </label>
     <label>Modelo <input name="model" maxlength="100"></label>
     <label>ASIN de Amazon <input name="asin" maxlength="10" placeholder="B0XXXXXXXX"></label>
-    <span class="hint">Con ASIN, el bot consulta el precio y el enlace de afiliado. Sin ASIN no hay precio.</span>
+    <span class="hint">Con ASIN, el enlace de afiliado se arma automáticamente con tu tag. El precio lo pondrá el bot cuando esté activo; por ahora se muestra "Consultar precio en Amazon".</span>
     <label>URL de imagen (https) <input name="image" maxlength="500"></label>
     <label>Descripción <textarea name="description" maxlength="500"></textarea></label>
     <label>Especificaciones (una por línea, formato clave: valor) <textarea name="specs"></textarea></label>
-    <label>Enlace del producto (amazon, sin afiliado) <input name="productUrl" maxlength="500"></label>
+    <label>Enlace de Amazon (opcional, se convierte en tu enlace de afiliado) <input name="productUrl" maxlength="500"></label>
     <div class="row">
       <label><input type="checkbox" name="featured"> Destacado</label>
       <label><input type="checkbox" name="popular"> Popular</label>
