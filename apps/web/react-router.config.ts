@@ -5,5 +5,5 @@ export default {
 	appDirectory: 'src',
 	buildDirectory: '../../dist/apps/web',
 	ssr: false,
-	prerender: ['/', '/privacidad', '/terminos', '/como-ganamos'],
+	prerender: ['/', '/admin', '/privacidad', '/terminos', '/como-ganamos'],
 } satisfies Config;
