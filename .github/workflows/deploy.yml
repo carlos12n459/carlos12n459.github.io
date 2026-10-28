@@ -1,10 +1,10 @@
-﻿name: Actualizar precios y publicar
+name: Actualizar precios y publicar
 
 on:
   push:
     branches: [main]
   schedule:
-    # Cada 12 horas: el precio nunca supera las 24 h de antigÃ¼edad.
+    # Cada 12 horas: el precio nunca supera las 24 h de antigüedad.
     - cron: '0 */12 * * *'
   workflow_dispatch:
 
@@ -39,10 +39,10 @@ jobs:
           CREATORS_PARTNER_TAG: ${{ vars.CREATORS_PARTNER_TAG }}
           CREATORS_MARKETPLACE: ${{ vars.CREATORS_MARKETPLACE }}
 
-      - name: Compilar sitio estÃ¡tico
+      - name: Compilar sitio estático
         run: npm run build --prefix apps/web
         env:
-          VITE_SITE_ORIGIN: https://carlos12n459.github.io
+          VITE_SITE_ORIGIN: ${{ vars.SITE_ORIGIN }}
 
       - name: Preparar 404 para GitHub Pages
         run: cp dist/apps/web/client/__spa-fallback.html dist/apps/web/client/404.html
